@@ -2,7 +2,7 @@ const sendToken = (res, user, message, statusCode = 200) => {
   const token = user.getJWTToken();
   const options = {
     httpOnly: true,
-    // secure: true,
+    secure: true,
     sameSite: true,
     expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
   };

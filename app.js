@@ -6,9 +6,7 @@ import paymentRouter from "./routers/paymentRoutes.js";
 import ErrorMiddleware from "./middleware/Error.js";
 import cookieParser from "cookie-parser";
 import otherRouter from "./routers/route.js";
-
-
-
+import cors from "cors";
 config({
   path: "./config/config.env",
 });
@@ -20,10 +18,24 @@ app.use(
     extended: true,
   })
 );
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+
 app.use("/api/v1", router);
 app.use("/api/v1", userRouter);
 app.use("/api/v1", paymentRouter);
 app.use("/api/v1", otherRouter);
+
+app.get("/", (req, res) => {
+  res.send(`Server is working. Click ${process.env.CLIENT_URL} here to visit.`);
+});
+
 export default app;
 
 app.use(ErrorMiddleware);
